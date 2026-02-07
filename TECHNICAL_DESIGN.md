@@ -162,163 +162,32 @@ class AIPersona:
 
 ## 🔧 Core Services Implementation
 
-### 1. Memory Manager Service
+## 1. 記憶レイヤー（MemU / MemuU Integration）
 
-```python
-# backend/services/memory_manager.py
+### アーキテクチャ概要
+PersonalOSは、記憶管理に **MemU**（https://memu.bot/）を採用します。
+必要に応じて MemU Cloud API（`https://api.memu.so`）に接続し、記憶化（抽出・構造化）と意味的検索を行います。
 
-from typing import List, Optional
-from models import Memory, MemoryLayer, MemoryType
-from services.memu_service import MemUService
-from services.embedding_service import EmbeddingService
+### コンポーネント
+- **MemUService**: MemU APIとの通信を担当するサービスクラス。
+  - `memorize`: 会話やテキストの記憶化タスクを登録
+  - `retrieve`: 意味的検索による記憶の取得
+  - `categories`: 記憶カテゴリの取得
+  - `delete`: ユーザー単位での記憶削除
 
-class MemoryManager:
-    def __init__(self):
-        self.memu = MemUService()
-        self.embedder = EmbeddingService()
+### データフロー
+1. **記憶の保存**:
+   User -> API -> MemUService -> MemU API (Memorize Task)
+   ※ MemU側で非同期に処理され、構造化・ベクトル化されます。
 
-    async def create_memory(
-        self,
-        user_id: str,
-        content: str,
-        type: MemoryType,
-        source: str,
-        metadata: dict = None
-    ) -> Memory:
-        """Create a new memory with automatic embedding."""
+2. **記憶の検索**:
+   User -> API -> MemUService -> MemU API (Retrieve)
+   ※ クエリに基づいて関連する記憶を抽出します。
 
-        # Generate embedding
-        embedding = await self.embedder.embed(content)
-
-        # Calculate importance score
-        importance = self._calculate_importance(content, metadata)
-
-        # Determine initial layer
-        layer = MemoryLayer.ACTIVE
-
-        memory = Memory(
-            user_id=user_id,
-            content=content,
-            embedding=embedding,
-            type=type,
-            layer=layer,
-            source=source,
-            importance_score=importance,
-            metadata=metadata or {}
-        )
-
-        # Save to memU
-        await self.memu.save(memory)
-
-        # Build relationships
-        await self._build_relationships(memory)
-
-        return memory
-
-    async def search_memories(
-        self,
-        user_id: str,
-        query: str,
-        limit: int = 10,
-        filters: dict = None
-    ) -> List[Memory]:
-        """Search memories using semantic similarity."""
-
-        # Generate query embedding
-        query_embedding = await self.embedder.embed(query)
-
-        # Search in vector database
-        results = await self.memu.search(
-            user_id=user_id,
-            embedding=query_embedding,
-            limit=limit,
-            filters=filters
-        )
-
-        # Update access counts
-        for memory in results:
-            await self._on_memory_accessed(memory)
-
-        return results
-
-    async def promote_memory(self, memory: Memory):
-        """Promote memory to higher layer if criteria met."""
-
-        if memory.layer == MemoryLayer.ACTIVE:
-            if memory.access_count > 5 or memory.importance_score > 0.8:
-                memory.layer = MemoryLayer.WORKING
-
-        elif memory.layer == MemoryLayer.WORKING:
-            if memory.access_count > 20 or memory.importance_score > 0.9:
-                memory.layer = MemoryLayer.REFERENCE
-
-        await self.memu.update(memory)
-
-    async def demote_memory(self, memory: Memory):
-        """Demote memory to lower layer if rarely accessed."""
-
-        days_since_access = (datetime.now() - memory.last_accessed_at).days
-
-        if memory.layer == MemoryLayer.WORKING:
-            if days_since_access > 30 and memory.access_count < 5:
-                memory.layer = MemoryLayer.ARCHIVE
-
-        elif memory.layer == MemoryLayer.REFERENCE:
-            if days_since_access > 90:
-                memory.layer = MemoryLayer.WORKING
-
-        await self.memu.update(memory)
-
-    def _calculate_importance(self, content: str, metadata: dict) -> float:
-        """Calculate importance score based on content and context."""
-
-        score = 0.5  # Base score
-
-        # Boost for certain keywords
-        important_keywords = ["important", "remember", "critical", "urgent"]
-        if any(kw in content.lower() for kw in important_keywords):
-            score += 0.2
-
-        # Boost for user-marked important
-        if metadata.get("user_marked_important"):
-            score += 0.3
-
-        # Boost for certain types
-        if metadata.get("type") in ["decision", "goal", "insight"]:
-            score += 0.1
-
-        return min(score, 1.0)
-
-    async def _build_relationships(self, memory: Memory):
-        """Find and create relationships with existing memories."""
-
-        # Find semantically similar memories
-        similar = await self.search_memories(
-            user_id=memory.user_id,
-            query=memory.content,
-            limit=5
-        )
-
-        # Create bidirectional relationships
-        for related in similar:
-            if related.id != memory.id:
-                memory.related_memory_ids.append(related.id)
-                related.related_memory_ids.append(memory.id)
-                await self.memu.update(related)
-
-        await self.memu.update(memory)
-
-    async def _on_memory_accessed(self, memory: Memory):
-        """Update memory statistics when accessed."""
-
-        memory.access_count += 1
-        memory.last_accessed_at = datetime.now()
-
-        # Check for promotion
-        await self.promote_memory(memory)
-
-        await self.memu.update(memory)
-```
+### 設定
+- `MEMUU_API_KEY`（または `MEMU_API_KEY`）: MemU Cloud APIの認証キー
+- `MEMUU_BASE_URL`: ベースURL（デフォルト: `https://api.memu.so`）
+- `MEMUU_AGENT_ID` / `MEMUU_AGENT_NAME`: エージェント識別子
 
 ---
 

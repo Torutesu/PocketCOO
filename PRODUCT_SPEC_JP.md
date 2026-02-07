@@ -11,12 +11,14 @@
 
 ---
 
-## 🔧 memU統合アーキテクチャ
+## 🔧 MemU統合アーキテクチャ
 
-### memUとは
-[memU](https://github.com/mem0ai/mem0) は、LLMおよびAI Agent向けのメモリフレームワークです。対話、ドキュメント、画像などのマルチモーダル入力を構造化された記憶として抽出・整理します。
+### MemUとは
+[MemU](https://memu.bot/) は、LLM/AI Agent向けの長期記憶レイヤーです。対話などの入力から「記憶」を抽出し、構造化・検索（セマンティック検索）できる形で蓄積します。
 
-### PersonalOSでのmemU活用
+本プロジェクトでは、実装として `mem0ai` を利用しつつ、必要に応じて MemU Cloud API（`https://api.memu.so`）に接続して記憶化・検索を行います。
+
+### PersonalOSでのMemU活用
 
 ```python
 from mem0 import Memory

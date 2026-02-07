@@ -10,7 +10,10 @@ class Settings(BaseSettings):
     API_PREFIX: str = "/api"
 
     # OpenAI設定
-    OPENAI_API_KEY: str
+    OPENAI_API_KEY: Optional[str] = None
+
+    # MemU設定
+    MEMU_API_KEY: Optional[str] = None
 
     # Qdrant設定
     QDRANT_HOST: str = "localhost"

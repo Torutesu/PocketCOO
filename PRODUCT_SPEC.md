@@ -516,29 +516,27 @@ Step 4: Try It Out
 
 **Backend**:
 - Python 3.11+ (FastAPI)
-- memU (memory framework)
+- MemU (agentic long-term memory): https://memu.bot/
+- mem0ai (memory framework)
 - Qdrant (vector database)
-- PostgreSQL (metadata)
-- Redis (caching)
-- Celery (background tasks)
+- SQLAlchemy + Alembic
+- SQLite (default, configurable via `DATABASE_URL`)
+- Redis (optional)
 
 **Frontend**:
 - Next.js 14 (React)
 - TypeScript
 - TailwindCSS
-- D3.js / Cytoscape.js (graph visualization)
-- shadcn/ui (components)
+- D3.js (graph visualization)
+- TanStack Query
+- Axios
+- Remotion (demo video)
 
 **AI/ML**:
-- OpenAI GPT-4o (cloud)
-- Anthropic Claude (cloud)
-- Ollama (local LLM option)
-- sentence-transformers (embeddings)
+- OpenAI (chat + embeddings)
 
 **Infrastructure**:
-- Docker & Kubernetes
-- GitHub Actions (CI/CD)
-- Terraform (IaC)
+- Docker & Docker Compose
 
 ---
 

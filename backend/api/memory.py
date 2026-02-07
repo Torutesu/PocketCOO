@@ -1,10 +1,21 @@
 from fastapi import APIRouter, Depends, HTTPException
 from models.memory import MemoryCreate
 from services.memu_service import MemUService
-from core.dependencies import get_memu_service
-from typing import List, Dict
+from core.dependencies import get_memu_service, get_db, require_api_key
+from typing import Dict
+from sqlalchemy.orm import Session
+from services.pocket_coo_service import PocketCOOService
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(require_api_key)])
+
+
+@router.get("")
+async def get_pocket_memory(userId: str, db: Session = Depends(get_db)):
+    try:
+        service = PocketCOOService(db)
+        return service.get_state(userId)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/")
 async def create_memory(

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "remotion:preview": "remotion preview remotion/index.ts",
+    "remotion:render": "remotion render remotion/index.ts PocketCOO30s out/pocket-coo-30s.mp4 --overwrite",
+    "remotion:render:presscut": "remotion render remotion/index.ts PresscutFounderDemo out/presscut-founder-demo.mp4 --overwrite"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -30,7 +33,8 @@
     "@types/d3": "^7.4.3"
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "eslint-config-next": "14.1.0"
+    "@remotion/cli": "^4.0.0",
+    "@remotion/google-fonts": "^4.0.0",
+    "remotion": "^4.0.0"
   }
 }

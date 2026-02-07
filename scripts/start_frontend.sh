@@ -1,4 +1,8 @@
 #!/bin/bash
 cd "$(dirname "$0")/../frontend"
-export $(cat ../.env | grep -v '^#' | xargs)
+if [ -f "../.env" ]; then
+  set -a
+  . ../.env
+  set +a
+fi
 npm run dev

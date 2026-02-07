@@ -1,5 +1,17 @@
 #!/bin/bash
 cd "$(dirname "$0")/../backend"
-source venv/bin/activate
-export $(cat ../.env | grep -v '^#' | xargs)
+if [ -d ".venv" ]; then
+  source .venv/bin/activate
+elif [ -d "venv" ]; then
+  source venv/bin/activate
+else
+  echo "virtualenv not found (.venv or venv)."
+  exit 1
+fi
+
+if [ -f "../.env" ]; then
+  set -a
+  . ../.env
+  set +a
+fi
 python main.py

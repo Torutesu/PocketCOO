@@ -15,28 +15,28 @@
 ### バックエンド
 - **Python 3.11+** - メイン言語
 - **FastAPI** - Web フレームワーク
-- **memU (mem0ai)** - メモリフレームワーク
+- **MemU（https://memu.bot/） + mem0ai** - 長期記憶（記憶化・検索）
 - **Qdrant** - ベクトルデータベース
-- **PostgreSQL** - メタデータ管理
-- **Redis** - キャッシング
+- **SQLAlchemy + Alembic** - DB
+- **SQLite（デフォルト）** - 永続化（`DATABASE_URL`で切替可）
+- **Redis（任意）** - キャッシング
 - **Pydantic** - データバリデーション
 
 ### フロントエンド
 - **Next.js 14** - React フレームワーク
 - **TypeScript** - 型安全性
 - **TailwindCSS** - スタイリング
-- **shadcn/ui** - UIコンポーネント
-- **D3.js / Cytoscape.js** - グラフ可視化
-- **React Query** - データフェッチング
+- **D3.js** - グラフ可視化
+- **TanStack Query** - データフェッチング
+- **Axios** - APIクライアント
+- **Remotion** - デモ動画
 
 ### AI/ML
-- **OpenAI GPT-4o-mini** - LLM（memUと統合）
-- **OpenAI Embeddings** - テキスト埋め込み
-- **Ollama（オプション）** - ローカルLLM
+- **OpenAI GPT-4o-mini** - LLM
+- **text-embedding-3-small** - テキスト埋め込み
 
 ### インフラ
 - **Docker & Docker Compose** - コンテナ化
-- **GitHub Actions** - CI/CD
 
 ---
 
