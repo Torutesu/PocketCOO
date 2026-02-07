@@ -13,6 +13,16 @@ type PresscutFounderDemoProps = {
 	brandName: string;
 	accentColor: string;
 	fontFamily: string;
+	screens?: {
+		homepage?: string;
+		coreWorkflow?: string;
+		result?: string;
+	};
+	voiceover?: {
+		homepage?: string;
+		coreWorkflow?: string;
+		result?: string;
+	};
 };
 
 const easeOut = Easing.out(Easing.cubic);
@@ -82,6 +92,155 @@ const BrowserFrame: React.FC<{
 				</div>
 			</div>
 			<div style={{width: '100%', height: '100%'}}>{children}</div>
+		</div>
+	);
+};
+
+const Cursor: React.FC<{
+	startFrame: number;
+	atFrame: number;
+	from: {x: number; y: number};
+	to: {x: number; y: number};
+}> = ({startFrame, atFrame, from, to}) => {
+	const frame = useCurrentFrame();
+	const f = frame - startFrame - atFrame;
+	const t = interpolate(f, [0, 12], [0, 1], {
+		easing: easeOut,
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+	const x = from.x + (to.x - from.x) * t;
+	const y = from.y + (to.y - from.y) * t;
+	const opacity = fade(f, 2, 2, 60);
+
+	return (
+		<div
+			style={{
+				position: 'absolute',
+				left: x,
+				top: y,
+				transform: 'translate(-6px, -6px)',
+				opacity,
+				pointerEvents: 'none',
+				zIndex: 50,
+			}}
+		>
+			<div
+				style={{
+					width: 0,
+					height: 0,
+					borderLeft: '0px solid transparent',
+					borderRight: '16px solid transparent',
+					borderTop: '24px solid rgba(226,232,240,0.92)',
+					filter: 'drop-shadow(0 8px 12px rgba(0,0,0,0.55))',
+				}}
+			/>
+		</div>
+	);
+};
+
+const ClickRipple: React.FC<{
+	startFrame: number;
+	atFrame: number;
+	x: number;
+	y: number;
+	color: string;
+}> = ({startFrame, atFrame, x, y, color}) => {
+	const frame = useCurrentFrame();
+	const f = frame - startFrame - atFrame;
+	const opacity = interpolate(f, [0, 10], [0.6, 0], {
+		easing: easeOut,
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+	const s = interpolate(f, [0, 10], [0.2, 1.6], {
+		easing: easeOut,
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+
+	return (
+		<div
+			style={{
+				position: 'absolute',
+				left: x,
+				top: y,
+				transform: `translate(-50%, -50%) scale(${s})`,
+				width: 44,
+				height: 44,
+				borderRadius: 999,
+				border: `3px solid ${color}`,
+				opacity,
+				pointerEvents: 'none',
+				zIndex: 49,
+				boxShadow: `0 0 40px ${color}55`,
+			}}
+		/>
+	);
+};
+
+const Callout: React.FC<{
+	startFrame: number;
+	atFrame: number;
+	x: number;
+	y: number;
+	accentColor: string;
+	title: string;
+	body: string;
+}> = ({startFrame, atFrame, x, y, accentColor, title, body}) => {
+	const frame = useCurrentFrame();
+	const f = frame - startFrame - atFrame;
+	const opacity = interpolate(f, [0, 6], [0, 1], {
+		easing: easeOut,
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+	const s = interpolate(f, [0, 6], [0.98, 1], {
+		easing: easeOut,
+		extrapolateLeft: 'clamp',
+		extrapolateRight: 'clamp',
+	});
+
+	return (
+		<div
+			style={{
+				position: 'absolute',
+				left: x,
+				top: y,
+				transform: `translate(-50%, -100%) scale(${s})`,
+				opacity,
+				zIndex: 40,
+				pointerEvents: 'none',
+				width: 420,
+			}}
+		>
+			<div
+				style={{
+					padding: 16,
+					borderRadius: 18,
+					background: 'rgba(2,6,23,0.72)',
+					border: `1px solid ${accentColor}55`,
+					boxShadow: '0 18px 60px rgba(0,0,0,0.55)',
+				}}
+			>
+				<div style={{fontSize: 18, fontWeight: 1050, color: 'rgba(226,232,240,0.95)'}}>
+					{title}
+				</div>
+				<div style={{marginTop: 8, fontSize: 15, fontWeight: 850, color: 'rgba(148,163,184,0.92)', lineHeight: 1.35}}>
+					{body}
+				</div>
+			</div>
+			<div
+				style={{
+					width: 0,
+					height: 0,
+					borderLeft: '12px solid transparent',
+					borderRight: '12px solid transparent',
+					borderTop: `14px solid rgba(2,6,23,0.72)`,
+					marginLeft: 40,
+					filter: `drop-shadow(0 0 0 ${accentColor}55)`,
+				}}
+			/>
 		</div>
 	);
 };
@@ -197,7 +356,17 @@ const UiScene: React.FC<{
 	accentColor: string;
 	assetPath?: string;
 	placeholderLabel: string;
-}> = ({startFrame, durationInFrames, title, subtitle, accentColor, assetPath, placeholderLabel}) => {
+	voiceoverLine?: string;
+}> = ({
+	startFrame,
+	durationInFrames,
+	title,
+	subtitle,
+	accentColor,
+	assetPath,
+	placeholderLabel,
+	voiceoverLine,
+}) => {
 	const frame = useCurrentFrame();
 	const f = frame - startFrame;
 	const opacity = fade(f, 6, 8, durationInFrames);
@@ -254,7 +423,7 @@ const UiScene: React.FC<{
 									fontWeight: 900,
 								}}
 							>
-								Replace this panel with your founder voiceover script.
+								{voiceoverLine ?? 'Replace this line with your founder voiceover script.'}
 							</div>
 						</div>
 					</div>
@@ -268,6 +437,8 @@ export const PresscutFounderDemo: React.FC<PresscutFounderDemoProps> = ({
 	brandName,
 	accentColor,
 	fontFamily,
+	screens,
+	voiceover,
 }) => {
 	return (
 		<AbsoluteFill style={{fontFamily, backgroundColor: '#0B1220'}}>
@@ -281,8 +452,25 @@ export const PresscutFounderDemo: React.FC<PresscutFounderDemoProps> = ({
 					title="Start from the marketing promise"
 					subtitle="What does the homepage claim? We'll prove it in 3 clicks."
 					accentColor={accentColor}
-					assetPath={undefined}
+					assetPath={screens?.homepage}
 					placeholderLabel="Homepage"
+					voiceoverLine={voiceover?.homepage}
+				/>
+				<Cursor
+					startFrame={90}
+					atFrame={36}
+					from={{x: 260, y: 260}}
+					to={{x: 1030, y: 470}}
+				/>
+				<ClickRipple startFrame={90} atFrame={56} x={1030} y={470} color={accentColor} />
+				<Callout
+					startFrame={90}
+					atFrame={62}
+					x={1280}
+					y={440}
+					accentColor={accentColor}
+					title="Step 1: Prove the claim"
+					body="We start exactly where customers start: the homepage promise."
 				/>
 			</Sequence>
 			<Sequence from={300} durationInFrames={210}>
@@ -292,8 +480,25 @@ export const PresscutFounderDemo: React.FC<PresscutFounderDemoProps> = ({
 					title="The core workflow"
 					subtitle="Show the main job-to-be-done, end-to-end, without explaining every feature."
 					accentColor={accentColor}
-					assetPath={undefined}
+					assetPath={screens?.coreWorkflow}
 					placeholderLabel="Core Workflow"
+					voiceoverLine={voiceover?.coreWorkflow}
+				/>
+				<Cursor
+					startFrame={300}
+					atFrame={30}
+					from={{x: 420, y: 780}}
+					to={{x: 960, y: 620}}
+				/>
+				<ClickRipple startFrame={300} atFrame={50} x={960} y={620} color={accentColor} />
+				<Callout
+					startFrame={300}
+					atFrame={58}
+					x={1140}
+					y={600}
+					accentColor={accentColor}
+					title="Step 2: Do the job"
+					body="I do the exact workflow live. No slides. No buzzwords."
 				/>
 			</Sequence>
 			<Sequence from={510} durationInFrames={210}>
@@ -303,8 +508,25 @@ export const PresscutFounderDemo: React.FC<PresscutFounderDemoProps> = ({
 					title="The payoff"
 					subtitle="The moment the customer says: 'Oh, I get it.'"
 					accentColor={accentColor}
-					assetPath={undefined}
+					assetPath={screens?.result}
 					placeholderLabel="Result"
+					voiceoverLine={voiceover?.result}
+				/>
+				<Cursor
+					startFrame={510}
+					atFrame={28}
+					from={{x: 520, y: 520}}
+					to={{x: 1040, y: 360}}
+				/>
+				<ClickRipple startFrame={510} atFrame={48} x={1040} y={360} color={accentColor} />
+				<Callout
+					startFrame={510}
+					atFrame={56}
+					x={1260}
+					y={360}
+					accentColor={accentColor}
+					title="Step 3: Show the result"
+					body="This is where the customer sees the output they'd actually ship."
 				/>
 			</Sequence>
 			<Sequence from={720} durationInFrames={180}>
@@ -313,4 +535,3 @@ export const PresscutFounderDemo: React.FC<PresscutFounderDemoProps> = ({
 		</AbsoluteFill>
 	);
 };
-

@@ -9,7 +9,11 @@ else
   exit 1
 fi
 
-if [ -f "../.env" ]; then
+if [ -f "../.env.local" ]; then
+  set -a
+  . ../.env.local
+  set +a
+elif [ -f "../.env" ]; then
   set -a
   . ../.env
   set +a

@@ -5,6 +5,38 @@ from db.base import Base
 from db.session import engine
 import db.models
 import os
+from pathlib import Path
+from dotenv import dotenv_values
+
+
+def _load_project_env() -> None:
+    backend_dir = Path(__file__).resolve().parent
+    project_root = backend_dir.parent
+
+    base_env_path = project_root / ".env"
+    local_env_path = project_root / ".env.local"
+
+    loaded_from_base = set()
+
+    if base_env_path.exists():
+        base_values = dotenv_values(base_env_path)
+        for k, v in base_values.items():
+            if not k or v is None:
+                continue
+            if k not in os.environ:
+                os.environ[k] = str(v)
+                loaded_from_base.add(k)
+
+    if local_env_path.exists():
+        local_values = dotenv_values(local_env_path)
+        for k, v in local_values.items():
+            if not k or v is None:
+                continue
+            if k not in os.environ or k in loaded_from_base:
+                os.environ[k] = str(v)
+
+
+_load_project_env()
 
 app = FastAPI(
     title="PersonalOS API",
