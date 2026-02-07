@@ -58,6 +58,16 @@ export const Root: React.FC = () => {
 					brandName: 'Presscut',
 					accentColor: '#3B82F6',
 					fontFamily,
+					screens: {
+						homepage: 'remotion/presscut/homepage.png',
+						coreWorkflow: 'remotion/presscut/core-workflow.png',
+						result: 'remotion/presscut/result.png',
+					},
+					voiceover: {
+						homepage: "I'll start on the homepage and show you the promise in under 10 seconds.",
+						coreWorkflow: "Here's the core workflow—this is what you'd do every day.",
+						result: "And here's the output you'd actually ship to your team/customers.",
+					},
 				}}
 			/>
 		</>
