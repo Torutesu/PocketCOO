@@ -59,9 +59,9 @@ export const Root: React.FC = () => {
 					accentColor: '#3B82F6',
 					fontFamily,
 					screens: {
-						homepage: 'remotion/presscut/homepage.png',
-						coreWorkflow: 'remotion/presscut/core-workflow.png',
-						result: 'remotion/presscut/result.png',
+						homepage: '',
+						coreWorkflow: '',
+						result: '',
 					},
 					voiceover: {
 						homepage: "I'll start on the homepage and show you the promise in under 10 seconds.",
