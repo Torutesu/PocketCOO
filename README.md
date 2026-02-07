@@ -18,6 +18,14 @@ _JP:_ **memUの長期記憶で“育つ分身AI”をつくる**
 
 ---
 
+## Demo Video (挙動デモ)
+
+[![Pocket COO Demo Video](./docs/assets/pocket-coo-demo-video.svg)](https://drive.google.com/file/d/1f1PaQnXfY-4sWWEhExa4mODIpIGbSlKK/view?usp=sharing)
+
+- Google Drive: https://drive.google.com/file/d/1f1PaQnXfY-4sWWEhExa4mODIpIGbSlKK/view?usp=sharing
+- Notes: GitHub上では埋め込み再生できないため、リンク先で再生してください
+- Details: [docs/demo-video.md](./docs/demo-video.md)
+
 ## Project Title
 
 Pocket COO

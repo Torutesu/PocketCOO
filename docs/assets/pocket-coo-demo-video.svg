@@ -1,0 +1,36 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pocket COO Demo Video">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1220"/>
+      <stop offset="0.55" stop-color="#121B33"/>
+      <stop offset="1" stop-color="#0B1220"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="240" y1="140" x2="960" y2="490" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22C55E" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#2EA44F" stop-opacity="0.15"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" rx="28" fill="url(#bg)"/>
+  <rect x="70" y="70" width="1060" height="490" rx="24" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.10)"/>
+  <rect x="90" y="90" width="1020" height="450" rx="20" fill="url(#accent)"/>
+
+  <g filter="url(#shadow)">
+    <circle cx="600" cy="315" r="78" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.30)"/>
+    <path d="M635 315L582 280V350L635 315Z" fill="rgba(255,255,255,0.92)"/>
+  </g>
+
+  <text x="110" y="155" fill="rgba(255,255,255,0.92)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="44" font-weight="700">
+    Pocket COO
+  </text>
+  <text x="110" y="205" fill="rgba(255,255,255,0.78)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="24" font-weight="500">
+    Demo Video (挙動デモ)
+  </text>
+
+  <text x="110" y="520" fill="rgba(255,255,255,0.70)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="18">
+    Click to open on Google Drive
+  </text>
+</svg>
