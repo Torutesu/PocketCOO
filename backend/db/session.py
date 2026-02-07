@@ -4,7 +4,12 @@ from sqlalchemy.orm import sessionmaker
 
 
 def get_database_url() -> str:
-    return os.getenv("DATABASE_URL", "sqlite:///./data/personalos.db")
+    database_url = os.getenv("DATABASE_URL")
+    if database_url:
+        return database_url
+    if os.getenv("VERCEL"):
+        return "sqlite:////tmp/personalos.db"
+    return "sqlite:///./data/personalos.db"
 
 
 def _ensure_sqlite_dir(database_url: str) -> None:
