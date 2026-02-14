@@ -1,0 +1,51 @@
+services:
+  # Backend (FastAPI) - FREE TIER
+  - type: web
+    name: pocket-coo-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free  # 🆓 無料プラン
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: MEMU_CONFIG_PATH
+        value: ./config/memu_config.json
+      - key: MEMUU_API_KEY
+        sync: false
+      - key: MEMUU_BASE_URL
+        value: https://api.memu.so
+      - key: MEMUU_AGENT_ID
+        value: personalos
+      - key: MEMUU_AGENT_NAME
+        value: PersonalOS
+      - key: DATABASE_URL
+        value: sqlite:///./data/personalos.db
+      - key: BACKEND_HOST
+        value: 0.0.0.0
+      - key: BACKEND_PORT
+        value: 8000
+      - key: API_KEY
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
+      - key: QDRANT_URL
+        sync: false  # Qdrant Cloud の URL（例: https://xxx.cloud.qdrant.io）
+      - key: QDRANT_API_KEY
+        sync: false  # Qdrant Cloud の API キー
+      - key: CORS_ORIGINS
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DEBUG
+        value: false
+    disk:
+      name: pocket-coo-data
+      mountPath: /app/data
+      sizeGB: 1  # 無料枠: 1GB
+    healthCheckPath: /api/health
+    autoDeploy: true

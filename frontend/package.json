@@ -9,7 +9,12 @@
     "lint": "next lint",
     "remotion:preview": "remotion preview remotion/index.ts",
     "remotion:render": "remotion render remotion/index.ts PocketCOO30s out/pocket-coo-30s.mp4 --overwrite",
-    "remotion:render:presscut": "remotion render remotion/index.ts PresscutFounderDemo out/presscut-founder-demo.mp4 --overwrite"
+    "remotion:render:presscut": "remotion render remotion/index.ts PresscutFounderDemo out/presscut-founder-demo.mp4 --overwrite",
+    "remotion:render:founder": "remotion render remotion/index.ts PocketCOOFounderDemo out/pocket-coo-founder-demo.mp4 --overwrite",
+    "remotion:render:fast-ja": "remotion render remotion/index.ts PocketCOOFounderDemoFast-JA out/pocket-coo-fast-ja.mp4 --overwrite",
+    "remotion:render:fast-en": "remotion render remotion/index.ts PocketCOOFounderDemoFast-EN out/pocket-coo-fast-en.mp4 --overwrite",
+    "remotion:render:ui-ja": "remotion render remotion/index.ts PocketCOOFounderDemoWithUI-JA out/pocket-coo-ui-ja.mp4 --overwrite",
+    "remotion:render:ui-en": "remotion render remotion/index.ts PocketCOOFounderDemoWithUI-EN out/pocket-coo-ui-en.mp4 --overwrite"
   },
   "dependencies": {
     "react": "^18.2.0",

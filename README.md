@@ -161,6 +161,27 @@ _JP:_ `API_KEY` を設定した場合、バックエンドは `x-api-key` ヘッ
 
 ---
 
+## Production Deployment
+
+🆓 **完全無料で本番環境にデプロイ可能！**
+
+📘 **[DEPLOYMENT.md](./DEPLOYMENT.md)** - 完全無料デプロイガイド
+
+無料構成：
+- **Frontend**: Vercel Hobby（無料）
+- **Backend**: Render Free（無料）
+- **Vector DB**: Qdrant Cloud Free 1GB（無料）
+- **Database**: SQLite（無料）
+- **Total Cost**: **$0/月** 🎉
+
+⚠️ 制限事項：
+- バックエンドは15分間非アクティブでスリープ（最初のリクエストが遅い）
+- 個人プロジェクト向け
+
+_JP:_ 詳細なデプロイ手順は [DEPLOYMENT.md](./DEPLOYMENT.md) を参照してください。
+
+---
+
 ## Repository Structure
 
 ```
@@ -169,6 +190,10 @@ _JP:_ `API_KEY` を設定した場合、バックエンドは `x-api-key` ヘッ
 ├── frontend/              # Next.js
 ├── scripts/               # local run scripts
 ├── docker-compose.yml     # backend + frontend + qdrant
+├── render.yaml            # Render deployment config
+├── vercel.json            # Vercel deployment config
 ├── .env.example
+├── .env.production.example
+├── DEPLOYMENT.md          # Production deployment guide
 └── docs (md)
 ```

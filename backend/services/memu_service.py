@@ -44,14 +44,30 @@ class MemUService:
 
         openai_api_key = _env_api_key("OPENAI_API_KEY") or _env_api_key("OPENAI_API_KEY_BACKUP")
 
+        # Qdrant設定: CloudまたはローカルのQdrantに対応
+        qdrant_url = os.getenv("QDRANT_URL")
+        qdrant_api_key = os.getenv("QDRANT_API_KEY")
+
+        if qdrant_url:
+            # Qdrant Cloud使用（URL + APIキー）
+            qdrant_config = {
+                "url": qdrant_url,
+                "collection_name": "personalos_memories"
+            }
+            if qdrant_api_key:
+                qdrant_config["api_key"] = qdrant_api_key
+        else:
+            # ローカルQdrant使用（ホスト + ポート）
+            qdrant_config = {
+                "host": os.getenv("QDRANT_HOST", "localhost"),
+                "port": int(os.getenv("QDRANT_PORT", 6333)),
+                "collection_name": "personalos_memories"
+            }
+
         self.config = {
             "vector_store": {
                 "provider": "qdrant",
-                "config": {
-                    "host": os.getenv("QDRANT_HOST", "localhost"),
-                    "port": int(os.getenv("QDRANT_PORT", 6333)),
-                    "collection_name": "personalos_memories"
-                }
+                "config": qdrant_config
             },
             "llm": {
                 "provider": "openai",
